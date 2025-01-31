@@ -17,8 +17,6 @@ export const register = async (req, res) => {
         const cookie = req?.cookies[process.env.TokenName];
 
         
-        console.log((enroll && username && password));
-        
 
         if (cookie) {
             return res.status(300).json(
@@ -30,7 +28,7 @@ export const register = async (req, res) => {
                 .status(404)
                 .json(new ApiError('All fields Required'));
         }
-        enroll = enroll.toLowerCase() + '@curaj.ac.in'
+        enroll = enroll.toLowerCase() + '@curaj.ac.in';
 
         const existUserEmail = await Users.findOne({ enroll });
         if (existUserEmail) {
@@ -54,8 +52,6 @@ export const register = async (req, res) => {
 
         const EmailResponse = await sendMail(enroll);
         if (!EmailResponse.status) {
-            console.log(EmailResponse);
-            
             return res
                 .status(404)
                 .json(new ApiError('Email not Send !! Try Again'));

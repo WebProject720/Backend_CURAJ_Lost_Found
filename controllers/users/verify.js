@@ -1,7 +1,7 @@
+import jsonwebtoken from "jsonwebtoken";
 import { otp, User } from "../../Models/model.js";
 import { ApiError } from "../../utils/apiError.js";
 import { ApiResponse } from "../../utils/apiResponse.js";
-import { createToken } from "../../utils/getToken.js";
 import 'dotenv/config'
 
 export const verify = async (req, res) => {
@@ -52,7 +52,7 @@ export const verify = async (req, res) => {
                 )
             }
             await otp.deleteOne({ _id: doc._id });
-            const token = createToken({ _id: user._id, email: user.email });
+            const token = jsonwebtoken.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET_KEY, { expiresIn: '5d' });
             return res
                 .cookie(process.env.TokenName, token, CookieOptions)
                 .json(
