@@ -17,8 +17,6 @@ export const login = async (req, res) => {
         const TokenName = process.env.TokenName || 'Token';
         const cookie = req?.cookies[TokenName];
 
-        console.log(req?.cookies);
-        
         if (cookie) {
             return res.status(404).json(
                 new ApiError('Session already running')

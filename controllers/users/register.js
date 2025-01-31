@@ -9,14 +9,14 @@ import 'dotenv/config'
 
 export const register = async (req, res) => {
     try {
-        let { enrollment , username, password } = req.body;
+        let { enrollment, username, password } = req.body;
 
         let enroll = enrollment?.trim();
         username = username?.trim();
         password = password?.trim();
         const cookie = req?.cookies[process.env.TokenName];
 
-        
+
 
         if (cookie) {
             return res.status(300).json(
@@ -30,18 +30,19 @@ export const register = async (req, res) => {
         }
         enroll = enroll.toLowerCase() + '@curaj.ac.in';
 
-        const existUserEmail = await Users.findOne({ enroll });
-        if (existUserEmail) {
-            return res
-                .status(404)
-                .json(new ApiError('enroll already in use'))
+        const existUser = await Users.findOne(
+            {
+                $or: [{ email: enroll }, { username: username }]
+            }
+        );
+        if (existUser && !existUser?.isVerified) {
+            await Users.deleteOne({ _id: existUser?._id });
         }
 
-        const exitUserUsername = await Users.findOne({ username });
-        if (exitUserUsername) {
+        if (existUser && existUser?.isVerified) {
             return res
                 .status(404)
-                .json(new ApiError('Username already in use'))
+                .json(new ApiError('user already exits !!'))
         }
         const encodePass = await bcrypt.hash(password, 10);
         const newUser = await Users({
@@ -64,7 +65,7 @@ export const register = async (req, res) => {
             .json(new ApiResponse('user created successfully', response))
     } catch (error) {
         console.log(error);
-        
+
         return res
             .status(500)
             .json(
