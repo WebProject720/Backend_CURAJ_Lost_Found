@@ -8,7 +8,7 @@ import { CookieOption } from "../../utils/cookieOptions.js";
 export const verify = async (req, res) => {
     const production = process.env.PRODUCTION == "true";
     const CookieOptions = CookieOption(production);
-    
+
     try {
         let { email, username, OTP } = req.body;
 

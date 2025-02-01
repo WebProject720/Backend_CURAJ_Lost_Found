@@ -33,7 +33,7 @@ export const login = async (req, res) => {
 
         const user = await Users.findOne(
             {
-                $or: [{ email: identifier.toLowerCase() }, { username: identifier.toLowerCase() }]
+                $or: [{ email: identifier.toLowerCase() }, { username: identifier }]
             }
         );
 
@@ -44,7 +44,13 @@ export const login = async (req, res) => {
                     new ApiError('user not found')
                 )
         }
-
+        if (!user.isVerified) {
+            return res
+                .status(404)
+                .json(
+                    new ApiError('User not verified')
+                )
+        }
         const compare = await bcrypt.compare(password, user.password);
         if (!compare) {
             return res
@@ -54,7 +60,6 @@ export const login = async (req, res) => {
                 )
         }
         const token = jsonwebtoken.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET_KEY, { expiresIn: '5d' });
-        // const fullUser = await getUser(validID, identifier);
         return res
             .cookie(TokenName, token, CookieOptions)
             .json(
