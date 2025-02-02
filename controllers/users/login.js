@@ -13,7 +13,8 @@ export const login = async (req, res) => {
 
     try {
         let { identifier, password } = req.body;
-        identifier = identifier?.trim()
+        identifier = identifier?.trim();
+        password=password?.trim();
         const TokenName = process.env.TokenName || 'Token';
         const cookie = req?.cookies[TokenName];
 

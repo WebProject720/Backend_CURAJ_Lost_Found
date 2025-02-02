@@ -12,6 +12,9 @@ export const verify = async (req, res) => {
     try {
         let { email, username, OTP } = req.body;
 
+        email = email?.trim()
+        username = username?.trim();
+        OTP = OTP?.trim();
 
         if (!OTP) {
             return res
