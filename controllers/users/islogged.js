@@ -10,7 +10,7 @@ export const isUserLogged = async (req, res) => {
         const cookie = req?.cookies[TokenName];
 
         if (!cookie) {
-            return res.status(404).json(
+            return res.status(300).json(
                 new ApiError('Please Login !!', null, false)
             )
         }
@@ -26,14 +26,14 @@ export const isUserLogged = async (req, res) => {
                 new ApiResponse("User Details", user, true)
             )
         } else {
-            return res.status(404).json(
+            return res.status(304).json(
                 new ApiError('Cookie not valid', null, false)
             )
         }
 
     } catch (error) {
         console.log(error);
-        return res.status(404).json(
+        return res.status(500).json(
             new ApiError('Server Error')
         )
     }

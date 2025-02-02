@@ -38,7 +38,7 @@ export const logout = async (req, res) => {
         console.log(error);
 
         return res.status(500).json(
-            new ApiError('Server Error',error,false)
+            new ApiError('Server Error', error, false)
         )
     }
 }
