@@ -7,7 +7,7 @@ const genOTP = () => {
 };
 
 export const sendMail = async (tagertEmail) => {
-    const OTP = genOTP();
+    const OneTimePassword = genOTP();
 
     
     try {
@@ -28,7 +28,7 @@ export const sendMail = async (tagertEmail) => {
             subject: "Lost & Found - CURAJ || One Time Password",
             html: `<Html>
                         <Text>Welcome <strong> ${tagertEmail}</strong>,</Text><br/>
-                        <Text>Your OTP is: <b> ${OTP}</b></Text><br/>
+                        <Text>Your OTP is: <b> ${OneTimePassword}</b></Text><br/>
                         <Text>Please use this OTP to proceed with your action.</Text><br/>
                         <Text>Thank you!</Text>
                     </Html>`,
@@ -41,7 +41,7 @@ export const sendMail = async (tagertEmail) => {
         const del = await otp.deleteOne({ email: tagertEmail });
         const OTPdoc = new otp({
             email: tagertEmail,
-            OTP,
+            OTP:OneTimePassword,
         });
         await OTPdoc.save();
 
