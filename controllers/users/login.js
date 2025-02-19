@@ -14,7 +14,7 @@ export const login = async (req, res) => {
     try {
         let { identifier, password } = req.body;
         identifier = identifier?.trim();
-        password=password?.trim();
+        password = password?.trim();
         const TokenName = process.env.TokenName || 'Token';
         const cookie = req?.cookies[TokenName];
 
@@ -61,6 +61,7 @@ export const login = async (req, res) => {
                 )
         }
         const token = jsonwebtoken.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET_KEY, { expiresIn: '5d' });
+        delete user.password;
         return res
             .cookie(TokenName, token, CookieOptions)
             .json(
