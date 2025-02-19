@@ -3,7 +3,6 @@ import { ApiResponse } from "../../utils/apiResponse.js";
 import { Users } from '../../Models/users.model.js'
 import 'dotenv/config';
 import jsonwebtoken from 'jsonwebtoken';
-
 export const isUserLogged = async (req, res) => {
     try {
         const TokenName = process.env.TokenName || 'Token';

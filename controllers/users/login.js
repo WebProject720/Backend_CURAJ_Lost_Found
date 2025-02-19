@@ -9,7 +9,7 @@ import jsonwebtoken from 'jsonwebtoken'
 
 export const login = async (req, res) => {
     const production = process.env.PRODUCTION == "true";
-    const CookieOptions = CookieOption(production);
+    const CookieOptions = CookieOption(production, true);
 
     try {
         let { identifier, password } = req.body;
@@ -69,7 +69,6 @@ export const login = async (req, res) => {
             )
     } catch (error) {
         console.log(error);
-
         return res
             .status(500)
             .json(
