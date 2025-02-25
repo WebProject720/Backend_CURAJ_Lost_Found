@@ -12,7 +12,7 @@ export const authenticateUser = async (req, res, next) => {
 
         if (!cookie) {
             return res.status(401).json(
-                new ApiError('Unauthorized: Authentication is required or has failed.', error, false, 401)
+                new ApiError('Unauthorized: Authentication is required or has failed.', null, false, 401)
             )
         }
 

@@ -7,7 +7,7 @@ import { get } from '../../controllers/reports/get.js';
 const ReportsRouter = Router();
 
 
-
+//server/reports/add
 ReportsRouter.route('/add').post(authenticateUser, Add);
 ReportsRouter.route('/getall').get(authenticateUser, get);
 

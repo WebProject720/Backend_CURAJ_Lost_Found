@@ -1,7 +1,6 @@
 import { ApiError } from "../../utils/apiError.js";
 import { ApiResponse } from "../../utils/apiResponse.js";
 import { Reports } from '../../Models/model.js'
-import { isUserExits } from "../../middleware/isUserExits.js";
 
 export const Add = async (req, res) => {
     try {
@@ -14,9 +13,10 @@ export const Add = async (req, res) => {
             )
         }
         
+        
         if (!title || !description) {
             return res.status(300).json(
-                new ApiError("Title and Description required", error, false, 401)
+                new ApiError("Title and Description required", null, false, 401)
             )
         }
         
