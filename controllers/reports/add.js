@@ -1,7 +1,45 @@
-export const Add=()=>{
+import { ApiError } from "../../utils/apiError.js";
+import { ApiResponse } from "../../utils/apiResponse.js";
+import { Reports } from '../../Models/model.js'
+import { isUserExits } from "../../middleware/isUserExits.js";
+
+export const Add = async (req, res) => {
     try {
+        const { title, images, description } = req.body;
+        //for image use middleware
+        //userID,images
+        if (!req.user) {
+            return res.status(401).json(
+                new ApiError("unauthenrized user access", error, false, 401)
+            )
+        }
         
+        if (!title || !description) {
+            return res.status(300).json(
+                new ApiError("Title and Description required", error, false, 401)
+            )
+        }
+        
+
+        let newReport = new Reports({
+            userID: req.user._id,
+            title,
+            description
+        })
+
+
+        const report=await newReport.save()
+        
+
+
+        return res.status(200).json(
+            new ApiResponse('Report Added Successfully',report)
+        )
+
     } catch (error) {
-        
+        console.log(error);
+        return res.status(403).json(
+            new ApiError("Forbidden: The server refuses to authorize the request.", error)
+        )
     }
 }

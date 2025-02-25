@@ -4,7 +4,7 @@ import mongoose, { Schema } from "mongoose";
 export const ReportSchema = new Schema(
   {
     userID:{
-        type:[Schema.Types.ObjectId],
+        type:Schema.Types.ObjectId,
         ref:"Users"
     },
     title:{

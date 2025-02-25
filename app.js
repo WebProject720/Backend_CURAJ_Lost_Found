@@ -46,7 +46,9 @@ app.use(limiter);
 
 
 import UserRouter from './Routes/users/users.js';
+import ReportsRouter from './Routes/reports/reports.js';
 app.use('/users', UserRouter);
+app.use('/reports', ReportsRouter);
 
 
 
