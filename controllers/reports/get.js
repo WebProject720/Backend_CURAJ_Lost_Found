@@ -29,7 +29,8 @@ export const get = async (req, res) => {
                 $project: {
                     userID: 0,
                 }
-            }
+            },
+            { $sort: { createdAt: -1 } } 
         ]);
 
         return res.status(200).json(
