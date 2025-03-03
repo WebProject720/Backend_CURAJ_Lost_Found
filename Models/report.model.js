@@ -3,21 +3,26 @@ import mongoose, { Schema } from "mongoose";
 
 export const ReportSchema = new Schema(
   {
-    userID:{
-        type:Schema.Types.ObjectId,
-        ref:"Users"
+    userID: {
+      type: Schema.Types.ObjectId,
+      ref: "Users"
     },
-    title:{
-        type:String,
-        required:true
+    title: {
+      type: String,
+      required: true
     },
-    images:{
-        type:[String],
-        required:false
+    images: {
+      type: [String],
+      required: false
     },
-    description:{
-        type:String,
-        required:true
+    description: {
+      type: String,
+      required: true
+    },
+    isOpen: {
+      type: String,
+      required: false,
+      default: false
     }
   },
   { timestamps: true }
