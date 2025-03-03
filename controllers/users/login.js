@@ -32,31 +32,31 @@ export const login = async (req, res) => {
                 )
         }
 
-        // const user = await Users.findOne(
-        //     {
-        //         $or: [{ email: identifier.toLowerCase() }, { username: identifier }]
-        //     }
-        // );
-        let user = await Users.aggregate(
-            [
-                {
-                    $match: {
-                        $or: [{ email: identifier.toLowerCase() }, { username: identifier }]
-                    }
-                },
-                {
-                    $lookup: {
-                        from: "Reports",
-                        localField: "Reports",
-                        foreignField: "_id",
-                        as: "Complains",
-                    }
-                }
-            ]
-        )
-        if (!user?.length) user = false;
-        else
-            user = user[0];
+        const user = await Users.findOne(
+            {
+                $or: [{ email: identifier.toLowerCase() }, { username: identifier }]
+            }
+        );
+        // let user = await Users.aggregate(
+        //     [
+        //         {
+        //             $match: {
+        //                 $or: [{ email: identifier.toLowerCase() }, { username: identifier }]
+        //             }
+        //         },
+        //         {
+        //             $lookup: {
+        //                 from: "Reports",
+        //                 localField: "Reports",
+        //                 foreignField: "_id",
+        //                 as: "Complains",
+        //             }
+        //         }
+        //     ]
+        // )
+        // if (!user?.length) user = false;
+        // else
+        //     user = user[0];
 
 
 
