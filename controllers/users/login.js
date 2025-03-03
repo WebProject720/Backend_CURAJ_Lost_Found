@@ -58,7 +58,6 @@ export const login = async (req, res) => {
         else
             user = user[0];
 
-        console.log(user);
 
 
         if (!user) {
