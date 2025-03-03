@@ -30,9 +30,10 @@ export const get = async (req, res) => {
                     userID: 0,
                 }
             },
-            { $sort: { createdAt: -1 } } 
+            { $sort: { createdAt: -1 } }
         ]);
-
+       
+            
         return res.status(200).json(
             new ApiResponse('All reports', reports, true, 200)
         )
