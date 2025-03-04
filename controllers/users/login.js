@@ -6,6 +6,7 @@ import bcrypt from 'bcrypt'
 import 'dotenv/config'
 import { CookieOption } from "../../utils/cookieOptions.js";
 import jsonwebtoken from 'jsonwebtoken'
+import { response } from "express";
 
 export const login = async (req, res) => {
     const production = process.env.PRODUCTION == "true";
@@ -32,34 +33,12 @@ export const login = async (req, res) => {
                 )
         }
 
-        const user = await Users.findOne(
+        const { _doc } = await Users.findOne(
             {
                 $or: [{ email: identifier.toLowerCase() }, { username: identifier }]
             }
         );
-        // let user = await Users.aggregate(
-        //     [
-        //         {
-        //             $match: {
-        //                 $or: [{ email: identifier.toLowerCase() }, { username: identifier }]
-        //             }
-        //         },
-        //         {
-        //             $lookup: {
-        //                 from: "Reports",
-        //                 localField: "Reports",
-        //                 foreignField: "_id",
-        //                 as: "Complains",
-        //             }
-        //         }
-        //     ]
-        // )
-        // if (!user?.length) user = false;
-        // else
-        //     user = user[0];
-
-
-
+        let { password: SetPassword, ...user } = _doc;
         if (!user) {
             return res
                 .status(404)
@@ -67,6 +46,7 @@ export const login = async (req, res) => {
                     new ApiError('user not found')
                 )
         }
+
         if (!user.isVerified) {
             return res
                 .status(404)
@@ -74,7 +54,7 @@ export const login = async (req, res) => {
                     new ApiError('User not verified')
                 )
         }
-        const compare = await bcrypt.compare(password, user.password);
+        const compare = await bcrypt.compare(password, SetPassword);
         if (!compare) {
             return res
                 .status(404)
@@ -83,7 +63,6 @@ export const login = async (req, res) => {
                 )
         }
         const token = jsonwebtoken.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET_KEY, { expiresIn: '5d' });
-        delete user.password;
         return res
             .cookie(TokenName, token, CookieOptions)
             .json(

@@ -8,7 +8,7 @@ export const user = async (req, res) => {
                 new ApiError("unauthenrized user access", error, false, 401)
             )
         }
-        let user = await User.aggregate(
+        let complains = await User.aggregate(
             [
                 {
                     $match: {
@@ -21,6 +21,9 @@ export const user = async (req, res) => {
                         localField: "Reports",
                         foreignField: "_id",
                         as: "complains",
+                        pipeline: [
+                            { $sort: { createdAt: -1 } }
+                        ]
                     }
                 },
                 {
@@ -30,11 +33,12 @@ export const user = async (req, res) => {
                 }
             ]
         )
-        if (!user?.length) user = false;
+
+        if (!complains?.length) complains = false;
         else
-            user = user[0];
+            complains = complains[0];
         return res.status(200).json(
-            new ApiResponse('Report Added Successfully', user)
+            new ApiResponse('Report Added Successfully', complains)
         )
     } catch (error) {
         console.log(error);
