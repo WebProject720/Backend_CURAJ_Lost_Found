@@ -20,9 +20,9 @@ export const ReportSchema = new Schema(
       required: true
     },
     isOpen: {
-      type: String,
+      type: Boolean,
       required: false,
-      default: false
+      default: true
     }
   },
   { timestamps: true }

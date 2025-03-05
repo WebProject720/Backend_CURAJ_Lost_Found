@@ -6,7 +6,6 @@ import bcrypt from 'bcrypt'
 import 'dotenv/config'
 import { CookieOption } from "../../utils/cookieOptions.js";
 import jsonwebtoken from 'jsonwebtoken'
-import { response } from "express";
 
 export const login = async (req, res) => {
     const production = process.env.PRODUCTION == "true";

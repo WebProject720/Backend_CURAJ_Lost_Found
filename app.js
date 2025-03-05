@@ -51,8 +51,6 @@ app.use('/users', UserRouter);
 app.use('/reports', ReportsRouter);
 
 
-
-
 app.get('/', (req, res) => {
     res.send(`
       <!DOCTYPE html>
