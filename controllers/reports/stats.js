@@ -28,7 +28,7 @@ export const stats = async (req, res) => {
             totalComplains: reponse.total[0].count || 0,
             openedComplains: reponse.counts[0].count || 0,
             closedComplains: reponse.counts[1].count || 0,
-            todaysComplains: reponse.todays[0].todays || 0,
+            todaysComplains: reponse.todays.length>0?reponse.todays[0].todays || 0:0,
             usersCount
         }
         return res.status(200).json(

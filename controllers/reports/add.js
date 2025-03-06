@@ -5,9 +5,10 @@ import { Reports, User } from '../../Models/model.js'
 
 export const Add = async (req, res) => {
     try {
-        const { title, images, description } = req.body;
-        //for image use middleware
-        //userID,images
+        const { uploadedImage } = req;
+        const { title, description } = req.body;
+        // console.log(uploadedImage);
+
         if (!(req.user || req.user._id)) {
             return res.status(401).json(
                 new ApiError("unauthenrized user access", error, false, 401)
@@ -20,14 +21,22 @@ export const Add = async (req, res) => {
                 new ApiError("Title and Description required", null, false, 401)
             )
         }
-
-
-        let newReport = new Reports({
-            userID: req.user._id,
-            title,
-            description
-        })
-
+        let newReport;
+        if (uploadedImage.hasImage && uploadedImage.success) {
+            newReport = new Reports({
+                userID: req.user._id,
+                title,
+                description,
+                images: [uploadedImage.data.url],
+                imgDetails: uploadedImage.data
+            })
+        } else {
+            newReport = new Reports({
+                userID: req.user._id,
+                title,
+                description
+            })
+        }
 
         const report = await newReport.save()
 

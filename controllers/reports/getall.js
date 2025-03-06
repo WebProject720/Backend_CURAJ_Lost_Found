@@ -1,15 +1,13 @@
 import { ApiError } from "../../utils/apiError.js"
 import { ApiResponse } from "../../utils/apiResponse.js"
 import { Reports } from "../../Models/model.js"
-import { Types } from "mongoose";
 //get All complaint which are open
-export const getOne = async (req, res) => {
+export const getall = async (req, res) => {
     try {
-        const { id } = req.body;
         const reports = await Reports.aggregate([
             {
                 $match: {
-                    _id: id.length==24?new Types.ObjectId(id):null
+                    isOpen: true
                 }
             },
             {
@@ -40,8 +38,9 @@ export const getOne = async (req, res) => {
             { $sort: { createdAt: -1 } }
         ]);
 
+
         return res.status(200).json(
-            new ApiResponse('All reports', reports.length>0?reports[0]:false, true, 200)
+            new ApiResponse('All reports', reports, true, 200)
         )
     } catch (error) {
         console.log(error);
@@ -50,4 +49,4 @@ export const getOne = async (req, res) => {
             new ApiError("Server failed ", error, false, 500)
         )
     }
-} 
+}

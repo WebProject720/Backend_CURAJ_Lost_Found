@@ -26,6 +26,11 @@ export const AdminSchema = new Schema(
         profileImage:{
             type:String,
             default:null
+        },
+        imgDetails:{
+            type:Object,
+            required:false,
+            default:null
         }
     },
     { timestamps: true }

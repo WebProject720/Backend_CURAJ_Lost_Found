@@ -63,7 +63,7 @@ export const reply = async (req, res) => {
         }
         if (!complaint.isOpen) {
             return res.status(406).json(
-                new ApiError("Complaint now closed", null)
+                new ApiError("Complaint closed", null)
             )
         }
         const email = await sendReply(

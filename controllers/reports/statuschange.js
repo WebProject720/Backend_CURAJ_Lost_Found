@@ -8,8 +8,14 @@ export const ChgStatus = async (req, res) => {
         const complain = await Reports.findOne({ _id: id });
 
         if (!complain) {
-            return res.status(304).json(
+            return res.status(405).json(
                 new ApiError("Complain Not Found", '', false, 304)
+            )
+        }
+        
+        if (!complain.isOpen) {
+            return res.status(480).json(
+                new ApiError("Can't Reopen Complaints", '', false, 304)
             )
         }
 
@@ -18,7 +24,7 @@ export const ChgStatus = async (req, res) => {
                 new ApiError("Access Denied", '', false, 405)
             )
         }
-        const report = await Reports.findOneAndUpdate({ _id: id }, { isOpen: (complain.isOpen == "false") }, { new: true })
+        const report = await Reports.findOneAndUpdate({ _id: id }, { isOpen: false }, { new: true })
 
         return res.status(200).json(
             new ApiResponse('All reports', report, true, 200)

@@ -23,6 +23,10 @@ export const ReportSchema = new Schema(
       type: Boolean,
       required: false,
       default: true
+    },
+    imgDetails:{
+      type:[Object],
+      required:false,
     }
   },
   { timestamps: true }
